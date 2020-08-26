@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/application.properties
+/src/main/java/fr/springboot/refuge/jdbc/
+/src/main/java/fr/springboot/refuge/jdbc/
+/src/test/java/utilities/ConnectionDB.java
