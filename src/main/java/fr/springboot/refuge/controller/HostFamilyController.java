@@ -1,5 +1,6 @@
 package fr.springboot.refuge.controller;
 
+import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.entity.HostFamily;
 import fr.springboot.refuge.entity.Veterinary;
 import fr.springboot.refuge.services.HostFamilyService;
@@ -15,6 +16,7 @@ import static fr.springboot.refuge.helper.HelperClass.distinctByKey;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class HostFamilyController {
 
     @Autowired
@@ -28,6 +30,11 @@ public class HostFamilyController {
     @GetMapping("/host/{id}")
     public HostFamily getById(@PathVariable int id) {
         return hostFamilyService.findById(id);
+    }
+
+    @GetMapping("/host/{id}/animal")
+    public List<Animal> getAllAnimalsByHostFamily(@PathVariable int id) {
+        return hostFamilyService.findAnimalsByHostFamily(id);
     }
 
     @PostMapping("/host")

@@ -1,6 +1,7 @@
 package fr.springboot.refuge.dao;
 
 import fr.springboot.refuge.entity.Animal;
+import fr.springboot.refuge.entity.Species;
 import fr.springboot.refuge.entity.VeterinaryCare;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -21,21 +22,30 @@ public class AnimalDAOImpl implements AnimalDAO {
 
     public List<Animal> findAll() {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<Animal> query = currentSession.createQuery("from Animal", Animal.class);
+        Query<Animal> query = currentSession.createQuery("from Animal a Order By a.name", Animal.class);
         return query.getResultList();
     }
 
     @Override
     public List<Animal> findWithHostFamily() {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<Animal> query = currentSession.createQuery("from Animal a where a.hostFamily is not null", Animal.class);
+        Query<Animal> query = currentSession.createQuery("from Animal a where a.hostFamily is not null Order By a.name", Animal.class);
         return query.getResultList();
     }
 
     @Override
     public List<Animal> findAdopted() {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<Animal> query = currentSession.createQuery("from Animal a where a.adoptiveFamily is not null", Animal.class);
+        Query<Animal> query = currentSession.createQuery("from Animal a where a.adoptiveFamily is not null Order By a.name", Animal.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Animal> findBySpecies(String species) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<Animal> query = currentSession.createQuery("select a from Animal a where species =?1 Order By a.name");
+        Species param = Species.valueOf(species);
+        query.setParameter(1, param);
         return query.getResultList();
     }
 

@@ -1,6 +1,7 @@
 package fr.springboot.refuge.services;
 
 import fr.springboot.refuge.dao.HostFamilyDAO;
+import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.entity.HostFamily;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class HostFamilyServiceImpl implements HostFamilyService{
     @Transactional
     public List<HostFamily> findAll() {
         return hostFamilyDAO.findAll();
+    }
+
+    @Transactional
+    public List<Animal> findAnimalsByHostFamily(int id) {
+        return hostFamilyDAO.findAnimalsByHostFamily(id);
     }
 
     @Transactional

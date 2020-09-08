@@ -1,6 +1,7 @@
 package fr.springboot.refuge.dao;
 
 import fr.springboot.refuge.entity.AdoptiveFamily;
+import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.entity.HostFamily;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -24,6 +25,14 @@ public class AdoptiveFamilyDAOImpl implements AdoptiveFamilyDAO {
     public List<AdoptiveFamily> findAll() {
         Session currentSession = this.entityManager.unwrap(Session.class);
         Query<AdoptiveFamily> query = currentSession.createQuery("from AdoptiveFamily", AdoptiveFamily.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Animal> findAnimalsByAdoptiveFamily(int id) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<Animal> query = currentSession.createQuery("select a from Animal a where id_adoptive_family =?1");
+        query.setParameter(1, id);
         return query.getResultList();
     }
 

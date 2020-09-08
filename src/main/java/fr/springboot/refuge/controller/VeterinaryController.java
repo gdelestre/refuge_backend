@@ -14,6 +14,7 @@ import static fr.springboot.refuge.helper.HelperClass.distinctByKey;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class VeterinaryController {
 
     @Autowired

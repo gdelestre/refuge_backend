@@ -23,7 +23,7 @@ public class VeterinaryCareDAOImpl implements VeterinaryCareDAO{
     @Override
     public List<VeterinaryCare> findAllByAnimalId(int id) {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<VeterinaryCare> query = currentSession.createQuery("select care from VeterinaryCare care where id_animal =?1");
+        Query<VeterinaryCare> query = currentSession.createQuery("select care from VeterinaryCare care where id_animal =?1 Order By examenDate DESC");
         query.setParameter(1, id);
         return query.getResultList();
     }
@@ -31,7 +31,7 @@ public class VeterinaryCareDAOImpl implements VeterinaryCareDAO{
     @Override
     public List<VeterinaryCare> findAll() {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<VeterinaryCare> query = currentSession.createQuery("from VeterinaryCare", VeterinaryCare.class);
+        Query<VeterinaryCare> query = currentSession.createQuery("from VeterinaryCare Order By examenDate DESC", VeterinaryCare.class);
         return query.getResultList();
     }
 

@@ -1,5 +1,6 @@
 package fr.springboot.refuge.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -118,6 +119,16 @@ public class Animal {
 
     public void setAdoptiveFamily(AdoptiveFamily adoptiveFamily) {
         this.adoptiveFamily = adoptiveFamily;
+    }
+
+    @JsonManagedReference
+    public HostFamily getHostFamily() {
+        return hostFamily;
+    }
+
+    @JsonManagedReference
+    public AdoptiveFamily getAdoptiveFamily() {
+        return adoptiveFamily;
     }
 
     @Override

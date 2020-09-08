@@ -8,6 +8,7 @@ public interface AnimalService {
     List<Animal> findAll();
     List<Animal> findWithHostFamily();
     List<Animal> findAdopted();
+    List<Animal> findBySpecies(String species);
     Animal findById(int id);
     void saveOrUpdate(Animal animal);
     void deleteById(int id);

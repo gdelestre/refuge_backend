@@ -31,6 +31,14 @@ public class HostFamilyDAOImpl implements HostFamilyDAO {
     }
 
     @Override
+    public List<Animal> findAnimalsByHostFamily(int id) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<Animal> query = currentSession.createQuery("select a from Animal a where id_host_family =?1");
+        query.setParameter(1, id);
+        return query.getResultList();
+    }
+
+    @Override
     public HostFamily findById(int id) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         return currentSession.get(HostFamily.class, id);

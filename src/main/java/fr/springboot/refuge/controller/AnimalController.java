@@ -15,6 +15,7 @@ import static fr.springboot.refuge.helper.HelperClass.distinctByKey;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AnimalController {
 
     @Autowired
@@ -36,6 +37,11 @@ public class AnimalController {
     @GetMapping("/animal/adoptive")
     public List<Animal> getAdopted(){
         return animalService.findAdopted();
+    }
+
+    @GetMapping("/animal/species/{species}")
+    public List<Animal> getBySpecies(@PathVariable String species){
+        return animalService.findBySpecies(species);
     }
 
     @GetMapping("/animal/{id}")

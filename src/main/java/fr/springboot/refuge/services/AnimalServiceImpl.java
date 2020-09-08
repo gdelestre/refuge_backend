@@ -33,6 +33,11 @@ public class AnimalServiceImpl implements AnimalService{
     }
 
     @Transactional
+    public List<Animal> findBySpecies(String species) {
+        return animalDAO.findBySpecies(species);
+    }
+
+    @Transactional
     public Animal findById(int id) {
         return this.animalDAO.findById(id);
     }
