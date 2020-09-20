@@ -1,10 +1,8 @@
 package fr.springboot.refuge.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import net.bytebuddy.build.ToStringPlugin;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.Date;
 
 @Entity

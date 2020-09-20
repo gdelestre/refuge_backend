@@ -57,5 +57,4 @@ public class VeterinaryCareDAOImpl implements VeterinaryCareDAO{
         query.executeUpdate();
     }
 
-
 }

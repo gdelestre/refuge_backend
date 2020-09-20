@@ -1,8 +1,7 @@
 package fr.springboot.refuge.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.ColumnDefault;
 
+import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -15,7 +14,6 @@ public class HostFamily extends Person{
 
     @OneToMany(mappedBy = "hostFamily",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonBackReference
     List<Animal> animals;
 
     @ColumnDefault("True")
@@ -26,10 +24,6 @@ public class HostFamily extends Person{
     }
 
     public HostFamily() {
-    }
-
-    public List<Animal> getAnimals() {
-        return animals;
     }
 
     public void setAnimals(List<Animal> animals) {

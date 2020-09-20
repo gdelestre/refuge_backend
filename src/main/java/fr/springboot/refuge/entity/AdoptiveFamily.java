@@ -1,7 +1,5 @@
 package fr.springboot.refuge.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +13,7 @@ public class AdoptiveFamily extends Person {
 
     @OneToMany(mappedBy = "adoptiveFamily",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonBackReference
+
     List<Animal> animals;
 
     public AdoptiveFamily(String firstName, String lastName, int zipCode, String city, String streetName, int streetNumber, String phoneNumber, LocalDate adoptionDate) {
@@ -32,10 +30,6 @@ public class AdoptiveFamily extends Person {
 
     public void setAdoptionDate(LocalDate adoptionDate) {
         this.adoptionDate = adoptionDate;
-    }
-
-    public List<Animal> getAnimals() {
-        return animals;
     }
 
     public void setAnimals(List<Animal> animals) {

@@ -2,9 +2,7 @@ package fr.springboot.refuge.controller;
 
 import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.entity.HostFamily;
-import fr.springboot.refuge.entity.Veterinary;
 import fr.springboot.refuge.services.HostFamilyService;
-import fr.springboot.refuge.services.VeterinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

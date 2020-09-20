@@ -2,7 +2,6 @@ package fr.springboot.refuge.dao;
 
 import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.entity.HostFamily;
-import fr.springboot.refuge.entity.VeterinaryCare;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;

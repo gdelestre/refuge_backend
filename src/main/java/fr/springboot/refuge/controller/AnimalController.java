@@ -29,6 +29,7 @@ public class AnimalController {
         return animalService.findAll();
     }
 
+
     @GetMapping("/animal/host")
     public List<Animal> getWithHostFamily(){
         return animalService.findWithHostFamily();
@@ -90,9 +91,5 @@ public class AnimalController {
             return "You can't delete an animal with cares";
         }
     }
-
-
-
-
 
 }

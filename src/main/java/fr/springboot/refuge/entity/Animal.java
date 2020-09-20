@@ -1,8 +1,5 @@
 package fr.springboot.refuge.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -121,26 +118,12 @@ public class Animal {
         this.adoptiveFamily = adoptiveFamily;
     }
 
-    @JsonManagedReference
     public HostFamily getHostFamily() {
         return hostFamily;
     }
 
-    @JsonManagedReference
     public AdoptiveFamily getAdoptiveFamily() {
         return adoptiveFamily;
     }
 
-    @Override
-    public String toString() {
-        return "Animal{" +
-                "id=" + id +
-                ", species=" + species +
-                ", race='" + race + '\'' +
-                ", name='" + name + '\'' +
-                ", sexe='" + sexe + '\'' +
-                ", birthDate=" + birthDate +
-                ", arrivalDate=" + arrivalDate +
-                '}';
-    }
 }
