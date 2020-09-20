@@ -2,7 +2,6 @@ package fr.springboot.refuge.dao;
 
 import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.entity.Species;
-import fr.springboot.refuge.entity.VeterinaryCare;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,13 @@ public class AnimalDAOImpl implements AnimalDAO {
         this.entityManager = entityManager;
     }
 
+    @Override
     public List<Animal> findAll() {
         Session currentSession = this.entityManager.unwrap(Session.class);
         Query<Animal> query = currentSession.createQuery("from Animal a Order By a.name", Animal.class);
         return query.getResultList();
     }
+
 
     @Override
     public List<Animal> findWithHostFamily() {
@@ -49,17 +50,19 @@ public class AnimalDAOImpl implements AnimalDAO {
         return query.getResultList();
     }
 
+    @Override
     public Animal findById(int id) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         return currentSession.get(Animal.class, id);
     }
 
-
+    @Override
     public void saveOrUpdate(Animal animal) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         currentSession.saveOrUpdate(animal);
     }
 
+    @Override
     public void deleteById(int id) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         Query query = currentSession.createQuery("delete from Animal where id=?1");
