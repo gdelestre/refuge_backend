@@ -1,5 +1,7 @@
 package fr.springboot.refuge.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,22 +31,26 @@ public class Animal {
     @Column(name = "arrival_date")
     private LocalDate arrivalDate;
 
+    @Column(name = "is_adopted")
+    @ColumnDefault("False")
+    private boolean isAdopted;
+
     @OneToMany(mappedBy = "animal",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     List<VeterinaryCare> veterinaryCares;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_host_family")
     private HostFamily hostFamily;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
-    @JoinColumn(name = "id_adoptive_family")
-    private AdoptiveFamily adoptiveFamily;
+
+    @OneToOne(mappedBy = "adoptedAnimal")
+    private AdoptAnimal adoption;
 
     public Animal() {
     }
 
-    public Animal(int id, Species species, String race, String name, LocalDate birthDate, Sexe sexe, LocalDate arrivalDate) {
+    public Animal(int id, Species species, String race, String name, LocalDate birthDate, Sexe sexe, LocalDate arrivalDate, boolean isAdopted) {
         this.id = id;
         this.species = species;
         this.race = race;
@@ -52,14 +58,11 @@ public class Animal {
         this.birthDate = birthDate;
         this.sexe = sexe;
         this.arrivalDate = arrivalDate;
+        this.isAdopted = isAdopted;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Species getSpecies() {
@@ -110,20 +113,27 @@ public class Animal {
         this.arrivalDate = arrivalDate;
     }
 
-    public void setHostFamily(HostFamily hostFamily) {
-        this.hostFamily = hostFamily;
+    public boolean isAdopted() {
+        return isAdopted;
     }
 
-    public void setAdoptiveFamily(AdoptiveFamily adoptiveFamily) {
-        this.adoptiveFamily = adoptiveFamily;
+    public void setAdopted(boolean adopted) {
+        isAdopted = adopted;
+    }
+
+    public void setHostFamily(HostFamily hostFamily) {
+        this.hostFamily = hostFamily;
     }
 
     public HostFamily getHostFamily() {
         return hostFamily;
     }
 
-    public AdoptiveFamily getAdoptiveFamily() {
-        return adoptiveFamily;
+    public AdoptAnimal getAdoption() {
+        return adoption;
     }
 
+    public void setAdoption(AdoptAnimal adoption) {
+        this.adoption = adoption;
+    }
 }

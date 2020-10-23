@@ -267,17 +267,42 @@ public class RestSteps {
                     query = "update animal set id_host_family =? where name = ?";
                     predStmt = myConnex.prepareStatement(query);
                     predStmt.setString(1, hostId);
+                    predStmt.setString(2, name);
+                    predStmt.executeUpdate();
+
                     break;
                 case "adopte":
-                    query = "update animal set id_adoptive_family =? where name = ?";
+
+                    // get today's current date
+                    java.util.Date date = new java.util.Date();
+                    java.sql.Date today = new java.sql.Date(date.getTime());
+
+                    // the mysql insert statement
+                    query = "insert into adopt_animal (id_animal, id_adoptive_family, adoption_date) VALUES (?, ?, ?)";
                     predStmt = myConnex.prepareStatement(query);
-                    predStmt.setString(1, adoptiveId);
+
+                    // create the mysql insert preparedstatement
+                    predStmt.setString(1, animalId);
+                    predStmt.setString(2, adoptiveId);
+                    predStmt.setDate(3, today);
+                    predStmt.executeUpdate();
+
+                    System.out.println("Animal with id: "+animalId+" adopted by family: "+adoptiveId+" "+today);
+
+
+                    query = "update animal set is_adopted = 1 where id = ?";
+                    predStmt = myConnex.prepareStatement(query);
+                    predStmt.setString(1, animalId);
+                    predStmt.executeUpdate();
+
+
+                    System.out.println("Animal updated with is_adopted = true");
+
                     break;
             }
 
-            predStmt.setString(2, name);
 
-            predStmt.executeUpdate();
+
             myConnex.close();
 
         } catch (SQLException excep) {

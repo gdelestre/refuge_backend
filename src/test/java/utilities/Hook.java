@@ -17,9 +17,15 @@ public class Hook {
             statement.executeUpdate(sql);
             System.out.println("Delete all data from veterinary_care...");
 
+            sql = "DELETE FROM adopt_animal";
+            statement.executeUpdate(sql);
+            System.out.println("Delete all data from adopt_animal...");
+
+
             sql = "DELETE FROM animal";
             statement.executeUpdate(sql);
             System.out.println("Delete all data from animal...");
+
 
             sql = "DELETE FROM veterinary";
             statement.executeUpdate(sql);

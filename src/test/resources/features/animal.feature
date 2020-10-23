@@ -69,15 +69,19 @@ Feature: Gestion des animaux dans la base de données
 
   Scenario: Récupérer la liste des animaux adoptés
     Given un animal crée avec les paramètres, species: Chat, race: europeen, date de naissance: 2015-04-21, name: Jarvos, sexe: Male
-    And un autre animal crée avec les paramètres, species: Chat, race: europeen, date de naissance: 2014-08-15, name: Shanna, sexe: Femelle
     And une famille d'adoption créée avec les paramètres, prénom: Jean, nom: Dupond, numéro de téléphone: 0102030405, code postal: 24150, ville: Lalinde, nom de rue: rue_de_la_gare, numéro de rue: 23
     And cette famille qui adopte Jarvos
+
+    And un autre animal crée avec les paramètres, species: Chat, race: europeen, date de naissance: 2014-08-15, name: Shanna, sexe: Femelle
     And cette famille qui adopte Shanna
+
     And un autre animal crée avec les paramètres, species: Chat, race: persan, date de naissance: 2012-06-12, name: Cristal, sexe: Femelle
-    And un autre animal crée avec les paramètres, species: Chat, race: persan, date de naissance: 2015-02-11, name: Berlioz, sexe: Male
-    And une seconde famille d'accueil créée avec les paramètres, prénom: Marie, nom: Lebrun, numéro de téléphone: 0203040506, code postal: 24150, ville: Lalinde, nom de rue: rue_nationale, numéro de rue: 13
+    And une seconde famille d'adoption créée avec les paramètres, prénom: Marie, nom: Lebrun, numéro de téléphone: 0203040506, code postal: 24150, ville: Lalinde, nom de rue: rue_nationale, numéro de rue: 13
     And cette famille qui adopte Cristal
+
+    And un autre animal crée avec les paramètres, species: Chat, race: persan, date de naissance: 2015-02-11, name: Berlioz, sexe: Male
     And cette famille qui adopte Berlioz
+
     And un autre animal crée avec les paramètres, species: Chien, race: berger belge, date de naissance: 2010-09-05, name: Eden, sexe: Male
     And un autre animal crée avec les paramètres, species: Chien, race: croise, date de naissance: 2015-05-10, name: Nouk, sexe: Femelle
     Given une famille d'accueil créée avec les paramètres, prénom: Jean, nom: Dupond, numéro de téléphone: 0102030405, code postal: 24150, ville: Lalinde, nom de rue: rue_de_la_gare, numéro de rue: 23

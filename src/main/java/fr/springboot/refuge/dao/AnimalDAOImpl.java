@@ -37,7 +37,7 @@ public class AnimalDAOImpl implements AnimalDAO {
     @Override
     public List<Animal> findAdopted() {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<Animal> query = currentSession.createQuery("from Animal a where a.adoptiveFamily is not null Order By a.name", Animal.class);
+        Query<Animal> query = currentSession.createQuery("from Animal a where a.isAdopted = 1 Order By a.name", Animal.class);
         return query.getResultList();
     }
 

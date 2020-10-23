@@ -41,6 +41,7 @@ public class AdoptiveFamilyDAOImpl implements AdoptiveFamilyDAO {
         return currentSession.get(AdoptiveFamily.class, id);
     }
 
+
     @Override
     public void saveOrUpdate(AdoptiveFamily adoptiveFamily) {
         Session currentSession = this.entityManager.unwrap(Session.class);

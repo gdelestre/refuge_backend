@@ -8,31 +8,19 @@ import java.util.List;
 @Table(name = "adoptive_family")
 public class AdoptiveFamily extends Person {
 
-    @Column(name = "adoption_date")
-    private LocalDate adoptionDate;
 
     @OneToMany(mappedBy = "adoptiveFamily",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-
-    List<Animal> animals;
+            cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<AdoptAnimal> adoptions;
 
     public AdoptiveFamily(String firstName, String lastName, int zipCode, String city, String streetName, int streetNumber, String phoneNumber, LocalDate adoptionDate) {
         super(firstName, lastName, zipCode, city, streetName, streetNumber, phoneNumber);
-        this.adoptionDate = adoptionDate;
     }
 
     public AdoptiveFamily() {
     }
 
-    public LocalDate getAdoptionDate() {
-        return adoptionDate;
-    }
-
-    public void setAdoptionDate(LocalDate adoptionDate) {
-        this.adoptionDate = adoptionDate;
-    }
-
-    public void setAnimals(List<Animal> animals) {
-        this.animals = animals;
+    public void setAdoptions(List<AdoptAnimal> adoptions) {
+        this.adoptions = adoptions;
     }
 }
