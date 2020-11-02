@@ -25,12 +25,24 @@ public class VeterinaryCareController {
     @Autowired
     private VeterinaryService veterinaryService;
 
-
+/*
     @GetMapping("/care")
     public List<VeterinaryCare> getAll(){
         return veterinaryCareService.findAll();
     }
 
+ */
+
+    @GetMapping("/care/{id}")
+    public VeterinaryCare getCareById(@PathVariable int id){
+        return veterinaryCareService.findById(id);
+    }
+
+    @GetMapping("/care")
+    public List<VeterinaryCare> getCaresToDo(){
+        return veterinaryCareService.findCaresToDo();
+    }
+    
     @GetMapping("/{id}/care")
     public List<VeterinaryCare> getAllByAnimalId(@PathVariable int id){
         return veterinaryCareService.findAllByAnimalId(id);

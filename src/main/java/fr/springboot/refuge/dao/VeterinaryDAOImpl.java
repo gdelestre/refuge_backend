@@ -1,6 +1,7 @@
 package fr.springboot.refuge.dao;
 
 import fr.springboot.refuge.entity.Veterinary;
+import fr.springboot.refuge.entity.VeterinaryCare;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class VeterinaryDAOImpl implements VeterinaryDAO {
     public void saveOrUpdate(Veterinary veterinary) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         currentSession.saveOrUpdate(veterinary);
+
     }
 
     public void deleteById(int id) {

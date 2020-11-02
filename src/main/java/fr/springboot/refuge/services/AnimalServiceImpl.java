@@ -43,6 +43,11 @@ public class AnimalServiceImpl implements AnimalService{
     }
 
     @Transactional
+    public Animal findByName(String name) {
+        return this.animalDAO.findByName(name);
+    }
+
+    @Transactional
     public void saveOrUpdate(Animal animal) {
         this.animalDAO.saveOrUpdate(animal);
     }

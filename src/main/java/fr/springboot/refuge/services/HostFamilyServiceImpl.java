@@ -19,7 +19,6 @@ public class HostFamilyServiceImpl implements HostFamilyService{
         this.hostFamilyDAO = hostFamilyDAO;
     }
 
-
     @Transactional
     public List<HostFamily> findAll() {
         return hostFamilyDAO.findAll();

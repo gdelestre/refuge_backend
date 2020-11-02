@@ -8,9 +8,8 @@ import java.util.List;
 public class Veterinary extends Person{
 
     @OneToMany(mappedBy = "veterinary",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     List<VeterinaryCare> veterinaryCares;
-
 
     public Veterinary(String firstName, String lastName, int zipCode, String city, String streetName, int streetNumber, String phoneNumber) {
         super(firstName, lastName, zipCode, city, streetName, streetNumber, phoneNumber);
@@ -19,9 +18,11 @@ public class Veterinary extends Person{
     public Veterinary() {
     }
 
-    public List<VeterinaryCare> getVeterinaryCares() {
+    /*public List<VeterinaryCare> getVeterinaryCares() {
         return veterinaryCares;
     }
+
+     */
 
     public void setVeterinaryCares(List<VeterinaryCare> veterinaryCares) {
         this.veterinaryCares = veterinaryCares;

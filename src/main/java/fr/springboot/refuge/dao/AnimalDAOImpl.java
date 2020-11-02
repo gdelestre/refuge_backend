@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
@@ -26,7 +27,6 @@ public class AnimalDAOImpl implements AnimalDAO {
         return query.getResultList();
     }
 
-
     @Override
     public List<Animal> findWithHostFamily() {
         Session currentSession = this.entityManager.unwrap(Session.class);
@@ -44,7 +44,7 @@ public class AnimalDAOImpl implements AnimalDAO {
     @Override
     public List<Animal> findBySpecies(String species) {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<Animal> query = currentSession.createQuery("select a from Animal a where species =?1 Order By a.name");
+        Query<Animal> query = currentSession.createQuery("from Animal a where a.species =?1 Order By a.name", Animal.class);
         Species param = Species.valueOf(species);
         query.setParameter(1, param);
         return query.getResultList();
@@ -54,6 +54,18 @@ public class AnimalDAOImpl implements AnimalDAO {
     public Animal findById(int id) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         return currentSession.get(Animal.class, id);
+    }
+
+    @Override
+    public Animal findByName(String name) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<Animal> query = currentSession.createQuery("from Animal a where a.name = ?1", Animal.class);
+        query.setParameter(1, name);
+        try{
+             return query.getSingleResult();
+        }catch (NoResultException nre){
+            return null;
+        }
     }
 
     @Override

@@ -35,8 +35,7 @@ public class Animal {
     @ColumnDefault("False")
     private boolean isAdopted;
 
-    @OneToMany(mappedBy = "animal",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     List<VeterinaryCare> veterinaryCares;
 
     @ManyToOne(cascade = {CascadeType.ALL})
@@ -63,6 +62,10 @@ public class Animal {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Species getSpecies() {

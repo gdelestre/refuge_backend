@@ -10,6 +10,7 @@ public interface AnimalService {
     List<Animal> findAdopted();
     List<Animal> findBySpecies(String species);
     Animal findById(int id);
+    Animal findByName(String name);
     void saveOrUpdate(Animal animal);
     void deleteById(int id);
 }

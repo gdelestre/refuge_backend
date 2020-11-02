@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static fr.springboot.refuge.helper.HelperClass.distinctByKey;
 
 @RestController
 @RequestMapping("/api")
@@ -52,31 +49,41 @@ public class AnimalController {
 
     @PostMapping("/animal")
     public Animal save(@RequestBody Animal animal, HttpServletResponse response){
-        // Récupère la liste de tous les animaux
-        List<Animal> animals = animalService.findAll();
+        //Cherche un animal avec le nom de l'animal du formulaire.
+        Animal animalDB = animalService.findByName(animal.getName());
 
-        // Ajout de l'animal que l'on souhaite rajouter de la base données
-        animals.add(animal);
-
-        // Récupère la liste des animaux qui ont des noms différents
-        List<Animal> distinctAnimals = animals.stream()
-                .filter( distinctByKey(p -> p.getName()) )
-                .collect( Collectors.toList() );
-
-        // Compare la taille des liste de tous les animaux (+ celui que l'on veut rajouter) avec celle qui contient tous les animaux qui ont un nom différent
-        if(animals.size() != distinctAnimals.size()){
+        //Si on trouve un animal : le nom est déjà utilisé.
+        if(animalDB != null){
             response.setStatus(403);
             return new Animal();
-        }else{
-            animalService.saveOrUpdate(animal);
-            return animal;
         }
+
+        animalService.saveOrUpdate(animal);
+        return animal;
     }
 
     @PutMapping("/animal")
-    public Animal update(@RequestBody Animal animal){
-        animalService.saveOrUpdate(animal);
-        return animal;
+    public Animal update(@RequestBody Animal animal, HttpServletResponse response) {
+        //Cherche un animal avec le nom de l'animal du formulaire.
+        Animal animalDB = animalService.findByName(animal.getName());
+
+        try{
+            //Si on un trouve un animal et que son ID est différent de celui de l'animal du formulaire
+            if(animalDB != null && animalDB.getId() != animal.getId()){
+                response.setStatus(403);
+                return new Animal();
+            }
+
+            //Sinon on met à jour l'animal
+            animalService.saveOrUpdate(animal);
+            return animal;
+
+            //Conflit entre l'animal de la base de donnée (animalDB) et l'animal du formulaire: même ID mais sont différents.
+        }catch(Exception exception){
+            animalService.saveOrUpdate(animal);
+            return animal;
+        }
+
     }
 
     @DeleteMapping("/animal/{id}")

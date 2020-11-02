@@ -2,6 +2,7 @@ package fr.springboot.refuge.services;
 
 import fr.springboot.refuge.dao.VeterinaryDAO;
 import fr.springboot.refuge.entity.Veterinary;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import java.util.List;
 public class VeterinaryServiceImpl implements VeterinaryService {
     private VeterinaryDAO veterinaryDAO;
 
+    @Autowired
     public VeterinaryServiceImpl(VeterinaryDAO veterinaryDAO){
         this.veterinaryDAO = veterinaryDAO;
     }

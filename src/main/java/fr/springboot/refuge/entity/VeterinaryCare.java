@@ -1,7 +1,5 @@
 package fr.springboot.refuge.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -22,13 +20,12 @@ public class VeterinaryCare {
     @Column(name = "examen_time")
     private String examenTime;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_animal", nullable=false)
     private Animal animal;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_veterinary", nullable=false)
-    @JsonIgnore
     private Veterinary veterinary;
 
 
