@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 
@@ -30,9 +31,28 @@ public class HostFamilyDAOImpl implements HostFamilyDAO {
     }
 
     @Override
+    public List<HostFamily> findFreeFamilies() {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<HostFamily> query = currentSession.createQuery("from HostFamily family where family.free = 1", HostFamily.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public HostFamily findByPhoneNumber(String phoneNumber) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<HostFamily> query = currentSession.createQuery("from HostFamily family where family.phoneNumber = ?1", HostFamily.class);
+        query.setParameter(1, phoneNumber);
+        try{
+            return query.getSingleResult();
+        }catch (NoResultException nre){
+            return null;
+        }
+    }
+
+    @Override
     public List<Animal> findAnimalsByHostFamily(int id) {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<Animal> query = currentSession.createQuery("select a from Animal a where adoption.adoptiveFamily.id =?1");
+        Query<Animal> query = currentSession.createQuery("from Animal a where a.hostFamily.id =?1", Animal.class);
         query.setParameter(1, id);
         return query.getResultList();
     }

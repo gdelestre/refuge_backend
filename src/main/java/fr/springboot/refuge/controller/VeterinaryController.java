@@ -1,15 +1,19 @@
 package fr.springboot.refuge.controller;
 
 import fr.springboot.refuge.entity.Veterinary;
+import fr.springboot.refuge.entity.VeterinaryCare;
+import fr.springboot.refuge.services.VeterinaryCareService;
 import fr.springboot.refuge.services.VeterinaryService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
-import static fr.springboot.refuge.helper.HelperClass.distinctByKey;
 
 
 @RestController
@@ -19,6 +23,9 @@ public class VeterinaryController {
 
     @Autowired
     private VeterinaryService veterinaryService;
+
+    @Autowired
+    private VeterinaryCareService careService;
 
     @GetMapping("/veterinary")
     public List<Veterinary> getAll() {
@@ -32,25 +39,8 @@ public class VeterinaryController {
 
     @PostMapping("/veterinary")
     public Veterinary post(@RequestBody Veterinary veterinary, HttpServletResponse response) {
-        // Récupère la liste de tous les vétérinaires
-        List<Veterinary> veterinaries = veterinaryService.findAll();
-
-        // Ajout du vétérinaire que l'on souhaite rajouter dans la base de données
-        veterinaries.add(veterinary);
-
-        // Récupère la liste des vétérinaires qui ont des numéros de téléphone différents
-        List<Veterinary> distinctVeterinaries = veterinaries.stream()
-                .filter(distinctByKey(p -> p.getPhoneNumber()))
-                .collect(Collectors.toList());
-
-        // Compare la taille des liste de tous les vétérinaires (+ celui que l'on veut rajouter) avec celle qui contient tous les vétérinaires qui ont un numéro de téléphone différent
-        if (veterinaries.size() != distinctVeterinaries.size()) {
-            response.setStatus(403);
-            return new Veterinary();
-        } else {
-            veterinaryService.saveOrUpdate(veterinary);
-            return veterinary;
-        }
+        veterinaryService.saveOrUpdate(veterinary);
+        return veterinary;
     }
 
     @PutMapping("/veterinary")
@@ -60,8 +50,29 @@ public class VeterinaryController {
     }
 
     @DeleteMapping("/veterinary/{id}")
-    public String deleteById(@PathVariable int id) {
+    public String deleteById(@PathVariable int id, HttpServletResponse response) {
+        Map<String, String> result = new HashMap<String, String>();
+
+        List<VeterinaryCare> cares = careService.findAllByVeterinaryId(id);
+
+        Date now = new Date();
+        if(cares.get(0).getExamenDate().after(now)) {
+            response.setStatus(403);
+            result.put("message", "You can't delete veterinary with care(s) to do");
+            result.put("status", String.valueOf(response.getStatus()));
+            return JSONObject.toJSONString(result);
+        }
+
+        for(VeterinaryCare care: cares){
+            careService.deleteById(care.getId());
+        }
+
         veterinaryService.deleteById(id);
-        return "Veterinary has been deleted with id: " + id;
+        result.put("message", "veterinary has been deleted");
+        result.put("id", String.valueOf(id));
+        result.put("status", String.valueOf(response.getStatus()));
+
+        return JSONObject.toJSONString(result);
+
     }
 }

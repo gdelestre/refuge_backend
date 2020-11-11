@@ -1,7 +1,5 @@
 package fr.springboot.refuge.entity;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,8 +30,7 @@ public class Animal {
     private LocalDate arrivalDate;
 
     @Column(name = "is_adopted")
-    @ColumnDefault("False")
-    private boolean isAdopted;
+    private boolean isAdopted = false;
 
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     List<VeterinaryCare> veterinaryCares;

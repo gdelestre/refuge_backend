@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
@@ -25,6 +26,18 @@ public class AdoptiveFamilyDAOImpl implements AdoptiveFamilyDAO {
         Session currentSession = this.entityManager.unwrap(Session.class);
         Query<AdoptiveFamily> query = currentSession.createQuery("from AdoptiveFamily", AdoptiveFamily.class);
         return query.getResultList();
+    }
+
+    @Override
+    public AdoptiveFamily findByPhoneNumber(String phoneNumber) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<AdoptiveFamily> query = currentSession.createQuery("from AdoptiveFamily family where family.phoneNumber = ?1", AdoptiveFamily.class);
+        query.setParameter(1, phoneNumber);
+        try{
+            return query.getSingleResult();
+        }catch (NoResultException nre){
+            return null;
+        }
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "adoptive_family")
+@Table(name = "adoptive_family", uniqueConstraints={@UniqueConstraint(columnNames={"phone_number"})})
 public class AdoptiveFamily extends Person {
 
 

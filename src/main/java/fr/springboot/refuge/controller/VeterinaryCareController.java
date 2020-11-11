@@ -6,10 +6,14 @@ import fr.springboot.refuge.entity.VeterinaryCare;
 import fr.springboot.refuge.services.AnimalService;
 import fr.springboot.refuge.services.VeterinaryCareService;
 import fr.springboot.refuge.services.VeterinaryService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -24,14 +28,6 @@ public class VeterinaryCareController {
 
     @Autowired
     private VeterinaryService veterinaryService;
-
-/*
-    @GetMapping("/care")
-    public List<VeterinaryCare> getAll(){
-        return veterinaryCareService.findAll();
-    }
-
- */
 
     @GetMapping("/care/{id}")
     public VeterinaryCare getCareById(@PathVariable int id){
@@ -85,15 +81,15 @@ public class VeterinaryCareController {
     }
 
     @DeleteMapping("/care/{id}")
-    public String deleteCare(@PathVariable int id){
-        veterinaryCareService.deleteById(id);
-        return "Veterinary care has been deleted with id: "+id;
-    }
+    public String deleteCare(@PathVariable int id, HttpServletResponse response){
+        Map<String, String> result = new HashMap<String, String>();
 
-    @DeleteMapping("animal/{id}/care")
-    public String deleteAllCaresByAnimalId(@PathVariable int id){
-        veterinaryCareService.deleteAllCaresByAnimalId(id);
-        return "All cares has been deleted for animal Id: "+id;
+        veterinaryCareService.deleteById(id);
+        result.put("message", "care has been deleted");
+        result.put("id care", String.valueOf(id));
+        result.put("status", String.valueOf(response.getStatus()));
+
+        return JSONObject.toJSONString(result);
     }
 
 }

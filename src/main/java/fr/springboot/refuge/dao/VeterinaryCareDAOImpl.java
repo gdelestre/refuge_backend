@@ -1,6 +1,5 @@
 package fr.springboot.refuge.dao;
 
-import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.entity.VeterinaryCare;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -27,6 +26,14 @@ public class VeterinaryCareDAOImpl implements VeterinaryCareDAO{
     public List<VeterinaryCare> findAllByAnimalId(int id) {
         Session currentSession = this.entityManager.unwrap(Session.class);
         Query<VeterinaryCare> query = currentSession.createQuery("select care from VeterinaryCare care where id_animal =?1 Order By examenDate DESC", VeterinaryCare.class);
+        query.setParameter(1, id);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<VeterinaryCare> findAllByVeterinaryId(int id) {
+        Session currentSession = this.entityManager.unwrap(Session.class);
+        Query<VeterinaryCare> query = currentSession.createQuery("select care from VeterinaryCare care where id_veterinary =?1 Order By examenDate DESC", VeterinaryCare.class);
         query.setParameter(1, id);
         return query.getResultList();
     }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface HostFamilyDAO {
     List<HostFamily> findAll();
+    List<HostFamily> findFreeFamilies();
+    HostFamily findByPhoneNumber(String phoneNumber);
     List<Animal> findAnimalsByHostFamily(int id);
     HostFamily findById(int id);
     void saveOrUpdate(HostFamily hostFamily);

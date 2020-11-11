@@ -25,6 +25,11 @@ public class AdoptiveFamilyServiceImpl implements AdoptiveFamilyService {
     }
 
     @Transactional
+    public AdoptiveFamily findByPhoneNumber(String phoneNumber) {
+        return adoptiveFamilyDAO.findByPhoneNumber(phoneNumber);
+    }
+
+    @Transactional
     public List<Animal> findAnimalsByAdoptiveFamily(int id) {
         return adoptiveFamilyDAO.findAnimalsByAdoptiveFamily(id);
     }

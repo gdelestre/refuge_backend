@@ -4,11 +4,14 @@ import fr.springboot.refuge.entity.*;
 import fr.springboot.refuge.services.AdoptAnimalService;
 import fr.springboot.refuge.services.AdoptiveFamilyService;
 import fr.springboot.refuge.services.AnimalService;
-import fr.springboot.refuge.services.VeterinaryCareService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -24,41 +27,38 @@ public class AdoptAnimalController {
     @Autowired
     private AdoptiveFamilyService adoptiveFamilyService;
 
-    @Autowired
-    private VeterinaryCareService veterinaryCareService;
 
     @GetMapping("/adoption")
     public List<AdoptAnimal> getAll() {
         return adoptAnimalService.findAll();
     }
 
-
     @DeleteMapping("/adoption/{idAnimal}")
-    public String deleteById(@PathVariable int idAnimal) {
+    public String deleteById(@PathVariable int idAnimal, HttpServletResponse response) {
 
-        //Supprime tous les soins pour l'animal
-        veterinaryCareService.deleteAllCaresByAnimalId(idAnimal);
+        Map<String, String> result = new HashMap<String, String>();
 
         //Récupère l'adoption concerné
         AdoptAnimal adoption = adoptAnimalService.findByAnimalId(idAnimal);
 
         //Supprime l'adoption
         adoptAnimalService.deleteByAnimalId(idAnimal);
-
-        //Supprime l'animal concerné par l'adoption
-        animalService.deleteById(idAnimal);
+        result.put("animal message", "adoption has been deleted");
+        result.put("animal id", String.valueOf(idAnimal));
+        result.put("status", String.valueOf(response.getStatus()));
 
         //Récupère la liste des adoptions pour la famille d'adoption
         List<AdoptAnimal> adoptionForThisFamily = adoptAnimalService.findByAdoptiveFamilyId(adoption.getAdoptiveFamily().getId());
 
         //Si la famille n'a pas d'autre adoption, on l'a supprime
-        if(adoptionForThisFamily.size() == 0)
+        if(adoptionForThisFamily.size() == 0){
             adoptiveFamilyService.deleteById(adoption.getAdoptiveFamily().getId());
-
-
-        return "Adoption for Animal with id: " + idAnimal+ " has been deleted.";
+            result.put("family_message", "family has been deleted");
+            result.put("family id", String.valueOf(adoption.getAdoptiveFamily().getId()));
+            result.put("status", String.valueOf(response.getStatus()));
+        }
+        return JSONObject.toJSONString(result);
     }
-
 
     @PostMapping("adoption")
     public AdoptAnimal postAdoption(@RequestBody AdoptAnimal adoptAnimal){
@@ -66,7 +66,5 @@ public class AdoptAnimalController {
         adoptAnimalService.saveOrUpdate(adoptAnimal);
         return adoptAnimal;
     }
-
-
 
 }

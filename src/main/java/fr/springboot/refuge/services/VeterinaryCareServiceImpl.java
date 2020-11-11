@@ -24,6 +24,11 @@ public class VeterinaryCareServiceImpl implements VeterinaryCareService{
     }
 
     @Transactional
+    public List<VeterinaryCare> findAllByVeterinaryId(int id) {
+        return veterinaryCareDAO.findAllByVeterinaryId(id);
+    }
+
+    @Transactional
     public List<VeterinaryCare> findAll() {
         return veterinaryCareDAO.findAll();
     }

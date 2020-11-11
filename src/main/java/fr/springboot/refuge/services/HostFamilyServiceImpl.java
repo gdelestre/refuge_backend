@@ -25,6 +25,16 @@ public class HostFamilyServiceImpl implements HostFamilyService{
     }
 
     @Transactional
+    public List<HostFamily> findFreeFamilies() {
+        return hostFamilyDAO.findFreeFamilies();
+    }
+
+    @Transactional
+    public HostFamily findByPhoneNumber(String phoneNumber) {
+        return hostFamilyDAO.findByPhoneNumber(phoneNumber);
+    }
+
+    @Transactional
     public List<Animal> findAnimalsByHostFamily(int id) {
         return hostFamilyDAO.findAnimalsByHostFamily(id);
     }

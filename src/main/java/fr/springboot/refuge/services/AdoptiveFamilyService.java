@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface AdoptiveFamilyService {
     List<AdoptiveFamily> findAll();
+    AdoptiveFamily findByPhoneNumber(String phoneNumber);
     List<Animal> findAnimalsByAdoptiveFamily(int id);
     AdoptiveFamily findById(int id);
     void saveOrUpdate(AdoptiveFamily adoptiveFamily);

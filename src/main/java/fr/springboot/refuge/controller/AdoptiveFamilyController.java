@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static fr.springboot.refuge.helper.HelperClass.distinctByKey;
 
 @RestController
 @RequestMapping("/api")
@@ -30,43 +28,53 @@ public class AdoptiveFamilyController {
         return adoptiveFamilyService.findById(id);
     }
 
+    @GetMapping("/adoptive/phone/{phoneNumber}")
+    public AdoptiveFamily getByPhoneNumber(@PathVariable String phoneNumber) {
+        return adoptiveFamilyService.findByPhoneNumber(phoneNumber);
+    }
+
+    /*
     @GetMapping("/adoptive/{id}/animal")
     public List<Animal> getAllAnimalsByHostFamily(@PathVariable int id) {
         return adoptiveFamilyService.findAnimalsByAdoptiveFamily(id);
     }
+     */
 
     @PostMapping("/adoptive")
     public AdoptiveFamily post(@RequestBody AdoptiveFamily adoptiveFamily, HttpServletResponse response) {
-        // Récupère la liste des familles adoptantes
-        List<AdoptiveFamily> adoptiveFamilies = adoptiveFamilyService.findAll();
+        //Cherche une famille dans la BD avec le numéro de téléphone saisi
+        AdoptiveFamily familyDB = adoptiveFamilyService.findByPhoneNumber(adoptiveFamily.getPhoneNumber());
 
-        // Ajout de la famille adoptante que l'on souhaite rajouter dans la base de données
-        adoptiveFamilies.add(adoptiveFamily);
-
-        // Récupère la liste des  famille adoptantes qui ont des numéros de téléphone différents
-        List<AdoptiveFamily> distinctAdoptiveFamily = adoptiveFamilies.stream()
-                .filter(distinctByKey(p -> p.getPhoneNumber()))
-                .collect(Collectors.toList());
-
-        // Compare la taille des liste de toutes les familles adoptantes (+ celle que l'on veut rajouter) avec celle qui contient toutes les familles qui ont un numéro de téléphone différent
-        if (adoptiveFamilies.size() != distinctAdoptiveFamily.size()) {
+        //Si on trouve une famille : le numéro de téléphone est déjà utilisé
+        if (familyDB != null) {
             response.setStatus(403);
             return new AdoptiveFamily();
-        } else {
-            adoptiveFamilyService.saveOrUpdate(adoptiveFamily);
-            return adoptiveFamily;
         }
-    }
-
-    @PutMapping("/adoptive")
-    public AdoptiveFamily update(@RequestBody AdoptiveFamily adoptiveFamily) {
         adoptiveFamilyService.saveOrUpdate(adoptiveFamily);
         return adoptiveFamily;
     }
 
-    @DeleteMapping("/adoptive/{id}")
-    public String deleteById(@PathVariable int id) {
-        adoptiveFamilyService.deleteById(id);
-        return "Adoptive family has been deleted with id: " + id;
+    @PutMapping("/adoptive")
+    public AdoptiveFamily update(@RequestBody AdoptiveFamily adoptiveFamily, HttpServletResponse response) {
+        //Cherche une famille dans la BD avec le numéro de téléphone saisi
+        AdoptiveFamily familyDB = adoptiveFamilyService.findByPhoneNumber(adoptiveFamily.getPhoneNumber());
+
+        try {
+            //Si on un trouve une famille et que son ID est différent de celui de la famille du formulaire
+            if (familyDB != null && familyDB.getId() != adoptiveFamily.getId()) {
+                response.setStatus(403);
+                return new AdoptiveFamily();
+            }
+
+            //Sinon on met à jour la famille
+            adoptiveFamilyService.saveOrUpdate(adoptiveFamily);
+            return adoptiveFamily;
+
+            //Conflit entre la famille de la base de donnée (familyDB) et la famille du formulaire: même ID mais sont différents.
+        } catch (Exception exception) {
+            familyDB = null;
+            adoptiveFamilyService.saveOrUpdate(adoptiveFamily);
+            return adoptiveFamily;
+        }
     }
 }

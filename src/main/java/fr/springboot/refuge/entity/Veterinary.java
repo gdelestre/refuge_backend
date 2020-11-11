@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "veterinary", uniqueConstraints={@UniqueConstraint(columnNames={"phone_number"})})
+@Table(name = "veterinary")
 public class Veterinary extends Person{
 
     @OneToMany(mappedBy = "veterinary",
@@ -17,12 +17,6 @@ public class Veterinary extends Person{
 
     public Veterinary() {
     }
-
-    /*public List<VeterinaryCare> getVeterinaryCares() {
-        return veterinaryCares;
-    }
-
-     */
 
     public void setVeterinaryCares(List<VeterinaryCare> veterinaryCares) {
         this.veterinaryCares = veterinaryCares;
