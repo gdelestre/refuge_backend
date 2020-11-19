@@ -14,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://refuge-aws.s3-website.eu-west-3.amazonaws.com")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class VeterinaryController {
 
     @Autowired
@@ -56,15 +55,18 @@ public class VeterinaryController {
         List<VeterinaryCare> cares = careService.findAllByVeterinaryId(id);
 
         Date now = new Date();
-        if(cares.get(0).getExamenDate().after(now)) {
-            response.setStatus(403);
-            result.put("message", "You can't delete veterinary with care(s) to do");
-            result.put("status", String.valueOf(response.getStatus()));
-            return JSONObject.toJSONString(result);
-        }
 
-        for(VeterinaryCare care: cares){
-            careService.deleteById(care.getId());
+        if(cares.size() >0){
+            if(cares.get(0).getExamenDate().after(now)) {
+                response.setStatus(403);
+                result.put("message", "You can't delete veterinary with care(s) to do");
+                result.put("status", String.valueOf(response.getStatus()));
+                return JSONObject.toJSONString(result);
+            }
+
+            for(VeterinaryCare care: cares){
+                careService.deleteById(care.getId());
+            }
         }
 
         veterinaryService.deleteById(id);

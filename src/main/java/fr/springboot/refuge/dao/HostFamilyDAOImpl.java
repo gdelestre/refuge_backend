@@ -22,18 +22,17 @@ public class HostFamilyDAOImpl implements HostFamilyDAO {
         this.entityManager = entityManager;
     }
 
-
     @Override
-    public List<HostFamily> findAll() {
+    public List<HostFamily> findFreeFamilies() {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<HostFamily> query = currentSession.createQuery("from HostFamily", HostFamily.class);
+        Query<HostFamily> query = currentSession.createQuery("from HostFamily family where family.free = 1 order by family.lastName", HostFamily.class);
         return query.getResultList();
     }
 
     @Override
-    public List<HostFamily> findFreeFamilies() {
+    public List<HostFamily> findFullFamilies() {
         Session currentSession = this.entityManager.unwrap(Session.class);
-        Query<HostFamily> query = currentSession.createQuery("from HostFamily family where family.free = 1", HostFamily.class);
+        Query<HostFamily> query = currentSession.createQuery("from HostFamily family where family.free = 0 order by family.lastName", HostFamily.class);
         return query.getResultList();
     }
 

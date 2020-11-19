@@ -17,7 +17,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://refuge-aws.s3-website.eu-west-3.amazonaws.com")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class VeterinaryCareController {
 
     @Autowired

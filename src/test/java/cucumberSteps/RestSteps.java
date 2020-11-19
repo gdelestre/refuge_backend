@@ -346,15 +346,14 @@ public class RestSteps {
                 break;
         }
 
-
         if (method.equals("GET")) {
             response = request.get(adressComplement);
-            jsonString = response.asString();
         }
         if (method.equals("DELETE")) {
             response = request.delete(adressComplement);
-            jsonString = response.asString();
         }
+        jsonString = response.asString();
+        System.out.println("REPONSE JSON :: "+jsonString);
     }
 
     @When("^j'envoi au WS (\\w*)/id/(\\w*) un (DELETE) avec en paramètre l'id de l'animal$")
@@ -497,7 +496,11 @@ public class RestSteps {
                 generatedId = Integer.parseInt(adoptiveId);
         }
 
+        System.out.println("ID Généré :: "+generatedId);
+
         int responseId = JsonPath.from(jsonString).get("id");
+        System.out.println("ID DANS LA REPONSE :: "+responseId);
+
         Assert.assertEquals(generatedId, responseId);
 
     }

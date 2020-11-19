@@ -12,7 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://refuge-aws.s3-website.eu-west-3.amazonaws.com")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class AdoptiveFamilyController {
 
     @Autowired
@@ -33,12 +34,6 @@ public class AdoptiveFamilyController {
         return adoptiveFamilyService.findByPhoneNumber(phoneNumber);
     }
 
-    /*
-    @GetMapping("/adoptive/{id}/animal")
-    public List<Animal> getAllAnimalsByHostFamily(@PathVariable int id) {
-        return adoptiveFamilyService.findAnimalsByAdoptiveFamily(id);
-    }
-     */
 
     @PostMapping("/adoptive")
     public AdoptiveFamily post(@RequestBody AdoptiveFamily adoptiveFamily, HttpServletResponse response) {

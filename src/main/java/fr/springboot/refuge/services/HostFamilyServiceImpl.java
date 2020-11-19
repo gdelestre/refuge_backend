@@ -20,13 +20,13 @@ public class HostFamilyServiceImpl implements HostFamilyService{
     }
 
     @Transactional
-    public List<HostFamily> findAll() {
-        return hostFamilyDAO.findAll();
+    public List<HostFamily> findFreeFamilies() {
+        return hostFamilyDAO.findFreeFamilies();
     }
 
     @Transactional
-    public List<HostFamily> findFreeFamilies() {
-        return hostFamilyDAO.findFreeFamilies();
+    public List<HostFamily> findFullFamilies() {
+        return hostFamilyDAO.findFullFamilies();
     }
 
     @Transactional

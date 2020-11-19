@@ -15,22 +15,22 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://refuge-aws.s3-website.eu-west-3.amazonaws.com")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class HostFamilyController {
 
     @Autowired
     private HostFamilyService hostFamilyService;
-
-    @GetMapping("/host")
-    public List<HostFamily> getAll() {
-        return hostFamilyService.findAll();
-    }
 
     @GetMapping("/host/free")
     public List<HostFamily> getFreeFamilies() {
         return hostFamilyService.findFreeFamilies();
     }
 
+    @GetMapping("/host/full")
+    public List<HostFamily> getFullFamilies() {
+        return hostFamilyService.findFullFamilies();
+    }
 
     @GetMapping("/host/{id}")
     public HostFamily getById(@PathVariable int id) {

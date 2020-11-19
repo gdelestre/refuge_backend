@@ -6,8 +6,8 @@ import fr.springboot.refuge.entity.HostFamily;
 import java.util.List;
 
 public interface HostFamilyService {
-    List<HostFamily> findAll();
     List<HostFamily> findFreeFamilies();
+    List<HostFamily> findFullFamilies();
     HostFamily findByPhoneNumber(String phoneNumber);
     List<Animal> findAnimalsByHostFamily(int id);
     HostFamily findById(int id);
