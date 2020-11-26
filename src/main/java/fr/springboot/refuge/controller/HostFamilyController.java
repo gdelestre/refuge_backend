@@ -6,6 +6,7 @@ import fr.springboot.refuge.entity.HostFamily;
 import fr.springboot.refuge.services.HostFamilyService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,26 +24,31 @@ public class HostFamilyController {
     private HostFamilyService hostFamilyService;
 
     @GetMapping("/host/free")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<HostFamily> getFreeFamilies() {
         return hostFamilyService.findFreeFamilies();
     }
 
     @GetMapping("/host/full")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<HostFamily> getFullFamilies() {
         return hostFamilyService.findFullFamilies();
     }
 
     @GetMapping("/host/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public HostFamily getById(@PathVariable int id) {
         return hostFamilyService.findById(id);
     }
 
     @GetMapping("/host/phone/{phoneNumber}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public HostFamily getByPhoneNumber(@PathVariable String phoneNumber) {
         return hostFamilyService.findByPhoneNumber(phoneNumber);
     }
 
     @PostMapping("/host")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public HostFamily post(@RequestBody HostFamily hostFamily, HttpServletResponse response) {
         //Cherche une famille dans la BD avec le numéro de téléphone saisi
         HostFamily familyDB = hostFamilyService.findByPhoneNumber(hostFamily.getPhoneNumber());
@@ -58,6 +64,7 @@ public class HostFamilyController {
     }
 
     @PutMapping("/host")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public HostFamily update(@RequestBody HostFamily hostFamily, HttpServletResponse response) {
         //Cherche une famille dans la BD avec le numéro de téléphone saisi
         HostFamily familyDB = hostFamilyService.findByPhoneNumber(hostFamily.getPhoneNumber());
@@ -82,6 +89,7 @@ public class HostFamilyController {
     }
 
     @DeleteMapping("/host/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteById(@PathVariable int id, HttpServletResponse response) {
         //Récupère la liste de tous les animaux accueillis par cette famille
         List<Animal> animals = hostFamilyService.findAnimalsByHostFamily(id);

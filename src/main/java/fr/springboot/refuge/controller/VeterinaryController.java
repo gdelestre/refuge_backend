@@ -6,6 +6,7 @@ import fr.springboot.refuge.services.VeterinaryCareService;
 import fr.springboot.refuge.services.VeterinaryService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,28 +28,33 @@ public class VeterinaryController {
     private VeterinaryCareService careService;
 
     @GetMapping("/veterinary")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<Veterinary> getAll() {
         return veterinaryService.findAll();
     }
 
     @GetMapping("/veterinary/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public Veterinary getById(@PathVariable int id) {
         return veterinaryService.findById(id);
     }
 
     @PostMapping("/veterinary")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public Veterinary post(@RequestBody Veterinary veterinary, HttpServletResponse response) {
         veterinaryService.saveOrUpdate(veterinary);
         return veterinary;
     }
 
     @PutMapping("/veterinary")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public Veterinary update(@RequestBody Veterinary veterinary) {
         veterinaryService.saveOrUpdate(veterinary);
         return veterinary;
     }
 
     @DeleteMapping("/veterinary/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteById(@PathVariable int id, HttpServletResponse response) {
         Map<String, String> result = new HashMap<String, String>();
 

@@ -6,6 +6,7 @@ import fr.springboot.refuge.services.AnimalService;
 import fr.springboot.refuge.services.VeterinaryCareService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,31 +28,37 @@ public class AnimalController {
     private VeterinaryCareService veterinaryCareService;
 
     @GetMapping("/animal")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<Animal> getAll() {
         return animalService.findAll();
     }
 
     @GetMapping("/animal/host")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<Animal> getWithHostFamily() {
         return animalService.findWithHostFamily();
     }
 
     @GetMapping("/animal/adoptive")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<Animal> getAdopted() {
         return animalService.findAdopted();
     }
 
     @GetMapping("/animal/species/{species}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<Animal> getBySpecies(@PathVariable String species) {
         return animalService.findBySpecies(species);
     }
 
     @GetMapping("/animal/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public Animal getById(@PathVariable int id) {
         return animalService.findById(id);
     }
 
     @PostMapping("/animal")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public Animal save(@RequestBody Animal animal, HttpServletResponse response) {
         //Cherche un animal avec le nom de l'animal du formulaire.
         Animal animalDB = animalService.findByName(animal.getName());
@@ -67,6 +74,7 @@ public class AnimalController {
     }
 
     @PutMapping("/animal")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public Animal update(@RequestBody Animal animal, HttpServletResponse response) {
         //Cherche un animal avec le nom de l'animal du formulaire.
         Animal animalDB = animalService.findByName(animal.getName());
@@ -92,6 +100,7 @@ public class AnimalController {
     }
 
     @DeleteMapping("/animal/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteById(@PathVariable int id, HttpServletResponse response) {
         boolean canDelete = true;
         Map<String, String> result = new HashMap<String, String>();

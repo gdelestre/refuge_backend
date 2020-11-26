@@ -46,8 +46,7 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(int id, Species species, String race, String name, LocalDate birthDate, Sexe sexe, LocalDate arrivalDate, boolean isAdopted) {
-        this.id = id;
+    public Animal(Species species, String race, String name, LocalDate birthDate, Sexe sexe, LocalDate arrivalDate, boolean isAdopted) {
         this.species = species;
         this.race = race;
         this.name = name;
@@ -59,10 +58,6 @@ public class Animal {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Species getSpecies() {

@@ -6,6 +6,7 @@ import fr.springboot.refuge.services.AdoptiveFamilyService;
 import fr.springboot.refuge.services.AnimalService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,11 +31,13 @@ public class AdoptAnimalController {
 
 
     @GetMapping("/adoption")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<AdoptAnimal> getAll() {
         return adoptAnimalService.findAll();
     }
 
     @DeleteMapping("/adoption/{idAnimal}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteById(@PathVariable int idAnimal, HttpServletResponse response) {
 
         Map<String, String> result = new HashMap<String, String>();
@@ -62,6 +65,7 @@ public class AdoptAnimalController {
     }
 
     @PostMapping("adoption")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public AdoptAnimal postAdoption(@RequestBody AdoptAnimal adoptAnimal){
 
         adoptAnimalService.saveOrUpdate(adoptAnimal);

@@ -4,6 +4,7 @@ import fr.springboot.refuge.entity.AdoptiveFamily;
 import fr.springboot.refuge.entity.Animal;
 import fr.springboot.refuge.services.AdoptiveFamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,22 +21,26 @@ public class AdoptiveFamilyController {
     private AdoptiveFamilyService adoptiveFamilyService;
 
     @GetMapping("/adoptive")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<AdoptiveFamily> getAll() {
         return adoptiveFamilyService.findAll();
     }
 
     @GetMapping("/adoptive/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public AdoptiveFamily getById(@PathVariable int id) {
         return adoptiveFamilyService.findById(id);
     }
 
     @GetMapping("/adoptive/phone/{phoneNumber}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public AdoptiveFamily getByPhoneNumber(@PathVariable String phoneNumber) {
         return adoptiveFamilyService.findByPhoneNumber(phoneNumber);
     }
 
 
     @PostMapping("/adoptive")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public AdoptiveFamily post(@RequestBody AdoptiveFamily adoptiveFamily, HttpServletResponse response) {
         //Cherche une famille dans la BD avec le numéro de téléphone saisi
         AdoptiveFamily familyDB = adoptiveFamilyService.findByPhoneNumber(adoptiveFamily.getPhoneNumber());
@@ -50,6 +55,7 @@ public class AdoptiveFamilyController {
     }
 
     @PutMapping("/adoptive")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public AdoptiveFamily update(@RequestBody AdoptiveFamily adoptiveFamily, HttpServletResponse response) {
         //Cherche une famille dans la BD avec le numéro de téléphone saisi
         AdoptiveFamily familyDB = adoptiveFamilyService.findByPhoneNumber(adoptiveFamily.getPhoneNumber());

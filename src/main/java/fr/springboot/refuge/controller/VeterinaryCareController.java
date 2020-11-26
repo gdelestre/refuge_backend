@@ -8,6 +8,7 @@ import fr.springboot.refuge.services.VeterinaryCareService;
 import fr.springboot.refuge.services.VeterinaryService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,21 +32,25 @@ public class VeterinaryCareController {
     private VeterinaryService veterinaryService;
 
     @GetMapping("/care/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public VeterinaryCare getCareById(@PathVariable int id){
         return veterinaryCareService.findById(id);
     }
 
     @GetMapping("/care")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<VeterinaryCare> getCaresToDo(){
         return veterinaryCareService.findCaresToDo();
     }
     
     @GetMapping("/{id}/care")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MODERATOR')")
     public List<VeterinaryCare> getAllByAnimalId(@PathVariable int id){
         return veterinaryCareService.findAllByAnimalId(id);
     }
 
     @PostMapping("animal/{animalId}/veterinary/{veterinaryId}/care")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public VeterinaryCare postCare(@PathVariable int animalId, @PathVariable int veterinaryId, @RequestBody VeterinaryCare veterinaryCare){
         //On vérifie que les deux Id ne sont pas null
         if(animalId != 0 && veterinaryId != 0){
@@ -64,6 +69,7 @@ public class VeterinaryCareController {
     }
 
     @PutMapping("animal/{animalId}/veterinary/{veterinaryId}/care")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public VeterinaryCare putCare(@PathVariable int animalId, @PathVariable int veterinaryId, @RequestBody VeterinaryCare veterinaryCare){
         //On vérifie que les deux Id ne sont pas null
         if(animalId != 0 && veterinaryId != 0){
@@ -82,6 +88,7 @@ public class VeterinaryCareController {
     }
 
     @DeleteMapping("/care/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteCare(@PathVariable int id, HttpServletResponse response){
         Map<String, String> result = new HashMap<String, String>();
 
